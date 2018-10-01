@@ -1,0 +1,61 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+struct node {
+ int too;
+ int distance;
+ node *next;
+};
+void AddNodeToLN(node * &L, int too, int distance) {
+ node *p = new node;
+ p->too = too;
+ p->distance = distance;
+ p->next = L;
+ L = p;
+}
+void show(node * H) {
+ cout << "H->";
+ node* p = H;
+ while (p != NULL)
+ {
+ cout << p->distance << "/" << p->too << "->";
+ 
+ p = p-> next;
+
+ }
+ cout << "NULL" << endl;
+}
+
+int main() {
+ fstream czytaj;
+ czytaj.open("graf.txt");
+ int size;
+ czytaj >> size;
+
+ int** tab = new int*[size];
+ for (int i = 0; i < size; i++) {
+ tab[i] = new int[size];
+ }
+
+ for (int i = 0; i < size; i++) {
+ for (int j = 0; j < size; j++) {
+ czytaj >> tab[i][j];
+ }
+ }
+ node **LN = new node *[size];
+ for (int i = 0; i < size; i++) {
+ LN[i] = NULL;
+ }
+ for (int i = 0; i < size; i++) {
+ for (int j = 0; j < size; j++) {
+ if (tab[i][j] > 0) {
+ AddNodeToLN(LN[i], j, tab[i][j]);
+ }
+ }
+ }
+ for (int i = 0; i < size; i++) {
+ show(LN[i]);
+ }
+
+}
